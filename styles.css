@@ -1,0 +1,1577 @@
+:root {
+  --bg-deep: #061a14;
+  --bg-mid: #0a2f24;
+  --bg-glow: #2ecc8a;
+  --circle: #2ecc8a;
+  --ink: #f3f0e6;
+  --ink-soft: rgba(243, 240, 230, 0.72);
+  --gold: #e2b84a;
+  --accent: #2ecc8a;
+  --accent-2: #3dd6c6;
+  --card: rgba(255, 255, 255, 0.06);
+  --ring: 339.292;
+  --theme-a: #2ecc8a;
+  --theme-b: #e2b84a;
+  font-family: "Outfit", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg-deep);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background: linear-gradient(165deg, var(--bg-mid), var(--bg-deep) 60%, color-mix(in srgb, var(--bg-deep) 85%, #000));
+  overflow-x: hidden;
+  transition: background 0.55s ease;
+}
+
+body[data-template="silk"] {
+  background: linear-gradient(165deg, var(--bg-mid), var(--bg-deep));
+}
+
+body[data-template="morning"] {
+  background:
+    linear-gradient(
+      180deg,
+      #b8d4e8 0%,
+      #e8f0d8 28%,
+      #c5e0b0 55%,
+      #7aab6a 78%,
+      #3d6b3a 100%
+    );
+  --ink: #1a2e18;
+  --ink-soft: rgba(26, 46, 24, 0.72);
+  color: var(--ink);
+}
+
+body[data-template="morning"] .intro strong,
+body[data-template="morning"] .brand h1,
+body[data-template="morning"] .arabic,
+body[data-template="morning"] .translit,
+body[data-template="morning"] .count {
+  color: #142414;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+body[data-template="morning"] .step,
+body[data-template="morning"] .icon-btn {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(20, 50, 20, 0.2);
+  color: #1a2e18;
+}
+
+body[data-template="morning"] .footnote p {
+  color: rgba(20, 40, 20, 0.55);
+}
+
+body[data-template="moonlight"] {
+  background: linear-gradient(180deg, #071018 0%, #0a1a22 45%, var(--bg-deep) 100%);
+}
+
+body[data-template="galaxy"] {
+  background: linear-gradient(180deg, #050510 0%, #0a0a1c 50%, #080612 100%);
+}
+
+body[data-template="oasis"] {
+  background:
+    radial-gradient(ellipse 90% 45% at 50% 110%, color-mix(in srgb, var(--bg-glow) 28%, transparent), transparent 55%),
+    linear-gradient(180deg, var(--bg-mid), var(--bg-deep));
+}
+
+body[data-template="velvet"] {
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--bg-glow) 16%, var(--bg-mid)), transparent 50%),
+    linear-gradient(180deg, var(--bg-mid), var(--bg-deep));
+}
+
+body[data-template="mist"] {
+  background: linear-gradient(180deg, var(--bg-mid), color-mix(in srgb, var(--bg-glow) 12%, var(--bg-deep)), var(--bg-deep));
+}
+
+body[data-template="garden"] {
+  background:
+    radial-gradient(ellipse at 15% 85%, color-mix(in srgb, var(--bg-glow) 22%, transparent), transparent 40%),
+    radial-gradient(ellipse at 85% 20%, color-mix(in srgb, var(--bg-glow) 14%, transparent), transparent 35%),
+    linear-gradient(160deg, var(--bg-mid), var(--bg-deep));
+}
+
+body[data-template="dawn"] {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-glow) 30%, var(--bg-mid)),
+    var(--bg-mid) 45%,
+    var(--bg-deep)
+  );
+}
+
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+body.has-bg-image .bg-layer {
+  opacity: 0.35;
+}
+
+body.has-bg-image .ambient {
+  opacity: 0.35;
+}
+
+body.theme-0,
+body.theme-1,
+body.theme-2,
+body.theme-3 {
+  --theme-a: var(--circle, var(--bg-glow));
+  --theme-b: color-mix(in srgb, var(--circle, var(--bg-glow)) 55%, #fff);
+  --accent: var(--circle, var(--bg-glow));
+}
+
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+  transition: opacity 0.4s ease;
+}
+
+.fx {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Silk — clean gradient only */
+.ambient[data-template="silk"] .fx {
+  display: none;
+}
+
+/* Morning — dew, soft light, greenery */
+.ambient[data-template="morning"] .fx-a {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 42%;
+  border-radius: 0;
+  filter: blur(2px);
+  opacity: 0.85;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 236, 200, 0.55) 0%,
+    rgba(255, 250, 230, 0.25) 40%,
+    transparent 100%
+  );
+  animation: dawnBreath 10s ease-in-out infinite;
+}
+
+.ambient[data-template="morning"] .fx-b {
+  left: -5%;
+  bottom: -8%;
+  width: 60%;
+  height: 45%;
+  border-radius: 60% 40% 50% 50%;
+  filter: blur(28px);
+  opacity: 0.55;
+  background: radial-gradient(ellipse, rgba(70, 150, 80, 0.7), transparent 70%);
+  animation: leafSway 16s ease-in-out infinite;
+}
+
+.ambient[data-template="morning"] .fx-c {
+  right: -8%;
+  bottom: 5%;
+  width: 55%;
+  height: 40%;
+  border-radius: 45% 55% 40% 60%;
+  filter: blur(30px);
+  opacity: 0.45;
+  background: radial-gradient(ellipse, rgba(120, 180, 90, 0.65), transparent 70%);
+  animation: leafSway 18s ease-in-out infinite reverse;
+}
+
+.ambient[data-template="morning"] .fx-d {
+  inset: 0;
+  border-radius: 0;
+  filter: none;
+  opacity: 0.9;
+  animation: dewSparkle 3.5s ease-in-out infinite;
+  background-image:
+    radial-gradient(2px 2px at 12% 58%, rgba(255, 255, 255, 0.95), transparent),
+    radial-gradient(1.5px 1.5px at 22% 72%, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(2px 2px at 34% 64%, rgba(230, 255, 240, 0.9), transparent),
+    radial-gradient(1.5px 1.5px at 48% 78%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(2px 2px at 58% 68%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1.5px 1.5px at 70% 82%, rgba(230, 255, 240, 0.85), transparent),
+    radial-gradient(2px 2px at 82% 70%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1.5px 1.5px at 18% 86%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 42% 88%, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(1.5px 1.5px at 66% 92%, rgba(230, 255, 240, 0.75), transparent),
+    radial-gradient(2px 2px at 88% 86%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1.5px 1.5px at 28% 54%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(8px 5px at 25% 62%, rgba(255, 180, 200, 0.35), transparent),
+    radial-gradient(10px 6px at 55% 74%, rgba(255, 200, 160, 0.3), transparent),
+    radial-gradient(9px 5px at 75% 60%, rgba(255, 170, 190, 0.28), transparent);
+}
+
+/* Moonlight — real moon + stars, no center haze */
+.ambient[data-template="moonlight"] .fx-a {
+  width: 72px;
+  height: 72px;
+  top: 7%;
+  right: 8%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, #fffef5 0%, #f5e6b8 45%, #d4c48a 100%);
+  box-shadow:
+    0 0 18px 4px rgba(255, 248, 220, 0.45),
+    0 0 40px 10px rgba(200, 220, 255, 0.12);
+  opacity: 1;
+  filter: none;
+  animation: moonPulse 12s ease-in-out infinite;
+}
+
+.ambient[data-template="moonlight"] .fx-a::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 70% 40%, transparent 42%, #071018 58%);
+  opacity: 0.15;
+}
+
+.ambient[data-template="moonlight"] .fx-b,
+.ambient[data-template="moonlight"] .fx-c,
+.ambient[data-template="moonlight"] .fx-d {
+  inset: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  filter: none;
+  background-repeat: no-repeat;
+}
+
+.ambient[data-template="moonlight"] .fx-b {
+  opacity: 0.95;
+  background-image:
+    radial-gradient(1.5px 1.5px at 6% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 14% 28%, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(1.5px 1.5px at 22% 8%, #fff, transparent),
+    radial-gradient(1px 1px at 30% 35%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 38% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 46% 42%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 54% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 62% 30%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 70% 48%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 78% 16%, #fff, transparent),
+    radial-gradient(1px 1px at 86% 38%, rgba(255, 255, 255, 0.75), transparent),
+    radial-gradient(1px 1px at 94% 22%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1.5px 1.5px at 10% 55%, #fff, transparent),
+    radial-gradient(1px 1px at 18% 70%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 26% 82%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(2px 2px at 42% 62%, #fff, transparent),
+    radial-gradient(1px 1px at 50% 78%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1.5px 1.5px at 58% 88%, #fff, transparent),
+    radial-gradient(1px 1px at 74% 66%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 88% 80%, rgba(255, 255, 255, 0.55), transparent);
+  animation: twinkleStars 5s ease-in-out infinite;
+}
+
+.ambient[data-template="moonlight"] .fx-c {
+  opacity: 0.8;
+  animation: twinkleStars 7s ease-in-out infinite reverse;
+  background-image:
+    radial-gradient(1px 1px at 8% 40%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 16% 58%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 28% 48%, #fff, transparent),
+    radial-gradient(1px 1px at 36% 72%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 48% 52%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 60% 68%, #fff, transparent),
+    radial-gradient(1px 1px at 68% 84%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 80% 56%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 92% 72%, #fff, transparent),
+    radial-gradient(1px 1px at 4% 88%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 34% 94%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 72% 8%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1px 1px at 44% 4%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 84% 44%, #fff, transparent);
+}
+
+.ambient[data-template="moonlight"] .fx-d {
+  display: none;
+}
+
+/* Galaxy — deep space + dense stars + soft colored nebula (no white haze) */
+.ambient[data-template="galaxy"] {
+  background-image: none;
+}
+
+.ambient[data-template="galaxy"] .fx-a {
+  width: 120%;
+  height: 28%;
+  top: 38%;
+  left: -10%;
+  border-radius: 50%;
+  transform: rotate(-22deg);
+  filter: blur(36px);
+  opacity: 0.35;
+  background: linear-gradient(
+    90deg,
+    transparent 5%,
+    rgba(90, 60, 160, 0.55) 25%,
+    rgba(40, 100, 160, 0.35) 45%,
+    rgba(120, 50, 140, 0.45) 65%,
+    transparent 90%
+  );
+  animation: milky 22s ease-in-out infinite;
+}
+
+.ambient[data-template="galaxy"] .fx-b,
+.ambient[data-template="galaxy"] .fx-c,
+.ambient[data-template="galaxy"] .fx-d {
+  inset: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  filter: none;
+}
+
+.ambient[data-template="galaxy"] .fx-b {
+  opacity: 1;
+  animation: twinkleStars 4.5s ease-in-out infinite;
+  background-image:
+    radial-gradient(1.5px 1.5px at 3% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 7% 24%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(2px 2px at 12% 6%, #fff, transparent),
+    radial-gradient(1px 1px at 17% 38%, rgba(200, 220, 255, 0.85), transparent),
+    radial-gradient(1.5px 1.5px at 22% 16%, #fff, transparent),
+    radial-gradient(1px 1px at 27% 48%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1px 1px at 33% 8%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(2px 2px at 38% 28%, #fff, transparent),
+    radial-gradient(1px 1px at 43% 44%, rgba(180, 200, 255, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 49% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 54% 36%, rgba(255, 255, 255, 0.75), transparent),
+    radial-gradient(1px 1px at 59% 52%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 65% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 70% 40%, rgba(220, 200, 255, 0.8), transparent),
+    radial-gradient(2px 2px at 76% 8%, #fff, transparent),
+    radial-gradient(1px 1px at 81% 32%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 87% 46%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 93% 14%, #fff, transparent),
+    radial-gradient(1px 1px at 97% 28%, rgba(255, 255, 255, 0.75), transparent);
+}
+
+.ambient[data-template="galaxy"] .fx-c {
+  opacity: 0.95;
+  animation: twinkleStars 6s ease-in-out infinite reverse;
+  background-image:
+    radial-gradient(1px 1px at 5% 60%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 11% 72%, #fff, transparent),
+    radial-gradient(1px 1px at 16% 88%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 24% 64%, rgba(200, 220, 255, 0.75), transparent),
+    radial-gradient(2px 2px at 31% 80%, #fff, transparent),
+    radial-gradient(1px 1px at 37% 58%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1px 1px at 45% 90%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 52% 68%, #fff, transparent),
+    radial-gradient(1px 1px at 58% 84%, rgba(220, 200, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 64% 62%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1.5px 1.5px at 72% 92%, #fff, transparent),
+    radial-gradient(1px 1px at 78% 70%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 85% 86%, rgba(180, 200, 255, 0.65), transparent),
+    radial-gradient(2px 2px at 91% 64%, #fff, transparent),
+    radial-gradient(1px 1px at 96% 78%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 8% 96%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 48% 96%, rgba(255, 255, 255, 0.5), transparent);
+}
+
+.ambient[data-template="galaxy"] .fx-d {
+  opacity: 0.85;
+  background-image:
+    radial-gradient(1px 1px at 9% 42%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 19% 56%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 29% 22%, #c8d8ff, transparent),
+    radial-gradient(1px 1px at 41% 74%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 53% 26%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 61% 94%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 73% 34%, #e0d0ff, transparent),
+    radial-gradient(1px 1px at 83% 58%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 15% 4%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1px 1px at 67% 4%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 35% 98%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 89% 98%, rgba(255, 255, 255, 0.4), transparent);
+}
+
+/* Velvet — rich vignette + gold dust */
+.ambient[data-template="velvet"] .fx-a {
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.45) 100%);
+}
+.ambient[data-template="velvet"] .fx-b {
+  inset: 0;
+  background:
+    radial-gradient(1px 1px at 20% 30%, color-mix(in srgb, var(--gold) 80%, #fff), transparent),
+    radial-gradient(1px 1px at 45% 20%, var(--gold), transparent),
+    radial-gradient(1px 1px at 65% 55%, color-mix(in srgb, var(--gold) 70%, #fff), transparent),
+    radial-gradient(1px 1px at 80% 25%, var(--gold), transparent),
+    radial-gradient(1px 1px at 30% 70%, color-mix(in srgb, var(--gold) 60%, #fff), transparent),
+    radial-gradient(1px 1px at 75% 80%, var(--gold), transparent);
+  opacity: 0.55;
+  animation: dust 8s ease-in-out infinite;
+}
+.ambient[data-template="velvet"] .fx-c {
+  width: 70%;
+  height: 50%;
+  top: -10%;
+  left: 15%;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--bg-glow) 25%, transparent), transparent 70%);
+  filter: blur(40px);
+}
+.ambient[data-template="velvet"] .fx-d {
+  display: none;
+}
+
+/* Mist */
+.ambient[data-template="mist"] .fx-a,
+.ambient[data-template="mist"] .fx-b,
+.ambient[data-template="mist"] .fx-c {
+  width: 130%;
+  height: 40%;
+  left: -15%;
+  border-radius: 100%;
+  filter: blur(45px);
+  opacity: 0.22;
+  animation: mistDrift 16s ease-in-out infinite;
+}
+.ambient[data-template="mist"] .fx-a {
+  top: 10%;
+  background: color-mix(in srgb, #fff 35%, var(--bg-glow));
+}
+.ambient[data-template="mist"] .fx-b {
+  top: 40%;
+  opacity: 0.16;
+  animation-delay: -5s;
+  background: color-mix(in srgb, #fff 25%, var(--bg-mid));
+}
+.ambient[data-template="mist"] .fx-c {
+  bottom: 5%;
+  opacity: 0.2;
+  animation-delay: -9s;
+  background: color-mix(in srgb, var(--bg-glow) 40%, #fff);
+}
+.ambient[data-template="mist"] .fx-d {
+  display: none;
+}
+
+/* Garden — soft leaf-like washes */
+.ambient[data-template="garden"] .fx-a,
+.ambient[data-template="garden"] .fx-b,
+.ambient[data-template="garden"] .fx-c {
+  width: 50vmax;
+  height: 28vmax;
+  border-radius: 60% 40% 55% 45%;
+  filter: blur(42px);
+  opacity: 0.28;
+  animation: leafSway 14s ease-in-out infinite;
+}
+.ambient[data-template="garden"] .fx-a {
+  left: -10%;
+  bottom: 5%;
+  background: var(--bg-glow);
+}
+.ambient[data-template="garden"] .fx-b {
+  right: -12%;
+  top: 12%;
+  background: color-mix(in srgb, var(--bg-glow) 60%, #fff);
+  animation-delay: -4s;
+}
+.ambient[data-template="garden"] .fx-c {
+  left: 30%;
+  top: 45%;
+  width: 40vmax;
+  background: color-mix(in srgb, var(--gold) 40%, var(--bg-glow));
+  opacity: 0.16;
+  animation-delay: -8s;
+}
+.ambient[data-template="garden"] .fx-d {
+  display: none;
+}
+
+/* Dawn */
+.ambient[data-template="dawn"] .fx-a {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 55%;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-glow) 40%, transparent),
+    color-mix(in srgb, var(--gold) 22%, transparent) 50%,
+    transparent
+  );
+  animation: dawnBreath 11s ease-in-out infinite;
+}
+.ambient[data-template="dawn"] .fx-b {
+  width: 100%;
+  height: 2px;
+  top: 28%;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, #fff 50%, var(--bg-glow)), transparent);
+  opacity: 0.35;
+  filter: blur(1px);
+}
+.ambient[data-template="dawn"] .fx-c,
+.ambient[data-template="dawn"] .fx-d {
+  display: none;
+}
+
+@keyframes silkSweep {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 0.25;
+  }
+  40% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateX(160%) translateY(-8%) scale(1.05);
+    opacity: 0.2;
+  }
+}
+
+@keyframes silkBreathe {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes dewSparkle {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes silkFlow {
+  0%,
+  100% {
+    transform: translateX(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(4%) scaleY(1.08);
+  }
+}
+
+@keyframes moonPulse {
+  0%,
+  100% {
+    opacity: 0.92;
+    box-shadow:
+      0 0 16px 3px rgba(255, 248, 220, 0.4),
+      0 0 36px 8px rgba(200, 220, 255, 0.1);
+  }
+  50% {
+    opacity: 1;
+    box-shadow:
+      0 0 22px 6px rgba(255, 248, 220, 0.55),
+      0 0 48px 12px rgba(200, 220, 255, 0.16);
+  }
+}
+
+@keyframes twinkleStars {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes milky {
+  0%,
+  100% {
+    transform: rotate(-22deg) translateX(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: rotate(-20deg) translateX(2%);
+    opacity: 0.4;
+  }
+}
+
+@keyframes shaftGlow {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes dust {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes mistDrift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5%);
+  }
+}
+
+@keyframes leafSway {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(3%, -2%) rotate(4deg);
+  }
+}
+
+@keyframes dawnBreath {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.topbar,
+.app,
+.footnote {
+  position: relative;
+  z-index: 1;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0.85rem 0.65rem 0.5rem 1rem;
+  z-index: 80;
+  box-sizing: border-box;
+}
+
+body.settings-open .topbar {
+  z-index: 1;
+  pointer-events: none;
+}
+
+body.settings-open .top-actions {
+  visibility: hidden;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  flex: 0 0 auto;
+  margin-left: auto;
+  margin-right: 0;
+  padding-right: 0.15rem;
+}
+
+.lang-wrap {
+  position: relative;
+}
+
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  left: auto;
+  z-index: 100;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  min-width: 142px;
+  border-radius: 14px;
+  background: #10261d;
+  border: 1px solid rgba(226, 184, 74, 0.55);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+  isolation: isolate;
+}
+
+.brand-mark {
+  color: var(--gold);
+  font-size: 1.1rem;
+  animation: twinkle 2.8s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15) rotate(12deg);
+  }
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--ink);
+  font-size: 1.15rem;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+#resetBtn:active {
+  transform: rotate(-90deg) scale(0.92);
+}
+
+.lang-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, white);
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f0d78a, #e2b84a);
+  color: #1a1205;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.52rem 0.85rem 0.52rem 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.lang-caret {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #1a1205;
+  opacity: 0.75;
+}
+
+.lang-menu li {
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  color: #fff8e8;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: transparent;
+}
+
+.lang-menu li:hover,
+.lang-menu li:focus {
+  outline: none;
+  background: #2a4a38;
+  color: #ffe9a0;
+}
+
+.lang-menu li[aria-selected="true"] {
+  background: #3a5c45;
+  color: #fff;
+}
+
+.lang-select {
+  display: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0.5rem 1.25rem 2rem;
+}
+
+.intro {
+  margin: 0.4rem 0 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.intro strong {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.45rem;
+  margin-bottom: 1.4rem;
+}
+
+.step {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--card);
+  color: var(--ink-soft);
+  border-radius: 14px;
+  padding: 0.55rem 0.3rem;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+  text-align: center;
+  line-height: 1.25;
+}
+
+.step span {
+  display: block;
+  font-size: 0.78rem;
+  margin-top: 0.15rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.step.active {
+  border-color: color-mix(in srgb, var(--accent) 70%, white);
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.step.done {
+  border-color: color-mix(in srgb, var(--gold) 55%, transparent);
+  color: var(--gold);
+}
+
+.step.done span {
+  color: var(--gold);
+}
+
+.stage {
+  text-align: center;
+  animation: fadeUp 0.45s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.phrase-meta {
+  margin-bottom: 1.2rem;
+}
+
+.meaning {
+  margin: 0 0 0.55rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.arabic {
+  margin: 0;
+  font-family: "Amiri", serif;
+  font-size: clamp(2.2rem, 9vw, 3rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+  text-shadow: 0 8px 30px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.translit {
+  margin: 0.45rem 0 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.counter-btn {
+  position: relative;
+  width: min(72vw, 260px);
+  height: min(72vw, 260px);
+  margin: 0.4rem auto 0.8rem;
+  border: none;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      color-mix(in srgb, var(--circle) 88%, #fff) 0%,
+      var(--circle) 42%,
+      color-mix(in srgb, var(--circle) 55%, #000) 100%
+    );
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: transform 0.12s ease, box-shadow 0.2s ease, background 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.counter-btn::after {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: color-mix(in srgb, var(--circle) 22%, rgba(0, 0, 0, 0.45));
+  pointer-events: none;
+}
+
+.counter-btn:active {
+  transform: scale(0.96);
+}
+
+.counter-btn.pulse {
+  animation: tapPulse 0.35s ease;
+}
+
+@keyframes tapPulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--circle) 55%, transparent);
+  }
+  100% {
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.35),
+      0 0 0 28px transparent;
+  }
+}
+
+.ring {
+  position: absolute;
+  inset: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  transform: rotate(-90deg);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ring-track,
+.ring-progress {
+  fill: none;
+  stroke-width: 5;
+}
+
+.ring-track {
+  stroke: rgba(255, 255, 255, 0.22);
+}
+
+.ring-progress {
+  stroke: color-mix(in srgb, var(--circle) 40%, #fff);
+  stroke-linecap: round;
+  stroke-dasharray: var(--ring);
+  stroke-dashoffset: var(--ring);
+  transition: stroke-dashoffset 0.25s ease, stroke 0.4s ease;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--circle) 70%, transparent));
+}
+
+.count {
+  position: relative;
+  z-index: 3;
+  font-size: clamp(3rem, 14vw, 4.2rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.count-label {
+  position: absolute;
+  bottom: 22%;
+  z-index: 3;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  min-height: 1.4em;
+}
+
+.reward-panel,
+.complete-panel {
+  position: relative;
+  margin-top: 0.5rem;
+  padding: 1.4rem 1.2rem 1.3rem;
+  border-radius: 22px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 18%, rgba(255, 255, 255, 0.08)), rgba(255, 255, 255, 0.05));
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  text-align: center;
+  overflow: hidden;
+  animation: rewardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes rewardIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.reward-glow {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: var(--accent);
+  filter: blur(50px);
+  opacity: 0.35;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: glowPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: translateX(-50%) scale(1.15);
+  }
+}
+
+.reward-eyebrow {
+  position: relative;
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.reward-title {
+  position: relative;
+  margin: 0 0 0.7rem;
+  font-family: "Amiri", serif;
+  font-size: 1.55rem;
+}
+
+.reward-text {
+  position: relative;
+  margin: 0 0 1.2rem;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+
+
+
+
+.primary-btn {
+  position: relative;
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 1.6rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #083024;
+  background: linear-gradient(135deg, var(--gold), #f0d78a);
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.primary-btn:active {
+  transform: scale(0.97);
+}
+
+.complete-panel h2 {
+  margin: 0 0 0.5rem;
+  font-family: "Amiri", serif;
+  font-size: 2.2rem;
+  color: var(--gold);
+}
+
+.complete-panel > p {
+  margin: 0 0 1rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.complete-list {
+  list-style: none;
+  margin: 0 0 1.2rem;
+  padding: 0;
+  text-align: left;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.complete-list li {
+  padding: 0.7rem 0.85rem;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.complete-list strong {
+  display: block;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+}
+
+.isnad-box {
+  position: relative;
+  margin: 0 0 1.2rem;
+  padding: 0.95rem 1rem;
+  border-radius: 16px;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+}
+
+.isnad-box h3 {
+  margin: 0 0 0.55rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.isnad-text {
+  margin: 0 0 0.65rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.isnad-text strong {
+  color: var(--ink);
+}
+
+.isnad-note {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: rgba(243, 240, 230, 0.55);
+}
+
+.complete-burst {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--gold) 30%, transparent), transparent 35%),
+    radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--accent) 25%, transparent), transparent 40%);
+  animation: burstFade 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes burstFade {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.footnote {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 1.25rem 2rem;
+}
+
+.footnote p {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: rgba(243, 240, 230, 0.45);
+  text-align: center;
+}
+
+#confetti {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.stage[hidden],
+.reward-panel[hidden],
+.complete-panel[hidden],
+.settings[hidden],
+.settings-backdrop[hidden] {
+  display: none !important;
+}
+
+.file-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 0.7rem 1.1rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.file-btn.compact {
+  padding: 0.55rem 0.9rem;
+  font-size: 0.78rem;
+}
+
+.ghost-btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.ghost-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.settings-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 200;
+}
+
+.settings {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(100%, 380px);
+  height: 100dvh;
+  z-index: 210;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg-mid) 92%, #000), var(--bg-deep));
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 1.1rem 2rem;
+  overflow-y: auto;
+  animation: slideIn 0.28s ease both;
+}
+
+.settings-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0;
+  background: none;
+}
+
+.settings-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  flex: 1;
+  font-weight: 600;
+}
+
+.settings-head .icon-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(243, 240, 230, 0.75);
+  box-shadow: none;
+}
+
+.settings-head .icon-btn:hover,
+.settings-head .icon-btn:focus {
+  color: #fff;
+  border-color: color-mix(in srgb, var(--gold) 55%, white);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(24px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.settings-block {
+  margin-bottom: 1.35rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.settings-block h3 {
+  margin: 0 0 0.65rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.settings-hint {
+  margin: 0 0 0.8rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.settings-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.color-pickers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+}
+
+.color-pickers.single {
+  grid-template-columns: 1fr;
+  max-width: 140px;
+}
+
+.color-field {
+  display: grid;
+  gap: 0.4rem;
+  justify-items: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fff6d6;
+  letter-spacing: 0.02em;
+}
+
+.color-field input[type="color"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 48px;
+  padding: 0;
+  border: 2px solid color-mix(in srgb, var(--gold) 55%, white);
+  border-radius: 14px;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.color-field input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-field input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 12px;
+}
+
+.color-field input[type="color"]::-moz-color-swatch {
+  border: none;
+  border-radius: 12px;
+}
+
+.reset-colors-btn {
+  margin-top: 0.75rem;
+  width: 100%;
+}
+
+.palette {
+  display: none;
+}
+
+.swatch {
+  display: none;
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.55rem;
+}
+
+.template-card {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink);
+  padding: 0.45rem;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.template-card.active {
+  border-color: color-mix(in srgb, var(--gold) 70%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 35%, transparent);
+}
+
+.template-preview {
+  display: block;
+  height: 52px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.template-preview[data-preview="silk"] {
+  background: linear-gradient(145deg, color-mix(in srgb, var(--bg-mid, #0a2f24) 80%, #fff), var(--bg-deep, #061a14));
+}
+
+.template-preview[data-preview="moonlight"] {
+  background:
+    radial-gradient(circle at 78% 28%, #fffef5 0 6px, transparent 8px),
+    radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 40% 55%, #fff, transparent),
+    radial-gradient(1px 1px at 60% 20%, #fff, transparent),
+    radial-gradient(1px 1px at 75% 70%, #fff, transparent),
+    radial-gradient(1px 1px at 30% 80%, #fff, transparent),
+    linear-gradient(180deg, #071018, #0a1a22);
+}
+
+.template-preview[data-preview="galaxy"] {
+  background:
+    radial-gradient(1px 1px at 15% 25%, #fff, transparent),
+    radial-gradient(1px 1px at 35% 40%, #fff, transparent),
+    radial-gradient(1px 1px at 55% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 70% 55%, #fff, transparent),
+    radial-gradient(1px 1px at 85% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 25% 70%, #fff, transparent),
+    radial-gradient(1px 1px at 60% 80%, #fff, transparent),
+    linear-gradient(115deg, transparent 20%, rgba(90, 60, 160, 0.45) 50%, transparent 80%),
+    linear-gradient(180deg, #050510, #0a0a1c);
+}
+
+.template-preview[data-preview="morning"] {
+  background:
+    radial-gradient(1.5px 1.5px at 30% 70%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 55% 78%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 75% 65%, #fff, transparent),
+    linear-gradient(180deg, #b8d4e8 0%, #e8f0d8 35%, #7aab6a 75%, #3d6b3a 100%);
+}
+
+
+
+
+
+
+@media (min-width: 600px) {
+  .arabic {
+    font-size: 3.2rem;
+  }
+}

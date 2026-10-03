@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a2f24" />
+  <meta name="description" content="Count your dhikr and discover the rewards taught by the Prophet ﷺ" />
+  <title>Dhikr Rewards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Outfit:wght@300;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-layer" id="bgLayer" aria-hidden="true"></div>
+  <div class="ambient" id="ambient" data-template="silk" aria-hidden="true">
+    <span class="fx fx-a"></span>
+    <span class="fx fx-b"></span>
+    <span class="fx fx-c"></span>
+    <span class="fx fx-d"></span>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <h1 data-i18n="appTitle">Dhikr Rewards</h1>
+    </div>
+    <div class="top-actions">
+      <div class="lang-wrap">
+        <button type="button" class="lang-btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false">
+          <span id="langBtnLabel">Shqip</span>
+          <span class="lang-caret" aria-hidden="true"></span>
+        </button>
+        <ul class="lang-menu" id="langMenu" role="listbox" hidden>
+          <li role="option" data-lang="sq" tabindex="0">Shqip</li>
+          <li role="option" data-lang="en" tabindex="0">English</li>
+          <li role="option" data-lang="it" tabindex="0">Italiano</li>
+        </ul>
+      </div>
+      <select id="langSelect" class="lang-select" hidden aria-hidden="true">
+        <option value="sq">Shqip</option>
+        <option value="en">English</option>
+        <option value="it">Italiano</option>
+      </select>
+      <button type="button" class="icon-btn" id="settingsBtn" title="Settings" aria-label="Settings">⚙</button>
+      <button type="button" class="icon-btn" id="resetBtn" title="Reset" aria-label="Reset">⟲</button>
+    </div>
+  </header>
+
+  <aside class="settings" id="settingsPanel" hidden>
+    <div class="settings-head">
+      <h2 data-i18n="settingsTitle">Personalizimi</h2>
+      <button type="button" class="icon-btn" id="closeSettings" aria-label="Close">✕</button>
+    </div>
+
+    <section class="settings-block">
+      <h3 data-i18n="bgColorTitle">Ngjyra e sfondit</h3>
+      <div class="color-pickers single">
+        <label class="color-field">
+          <span data-i18n="colorMain">Kryesore</span>
+          <input type="color" id="bgColorMain" value="#0a2f24" />
+        </label>
+      </div>
+      <button type="button" class="ghost-btn reset-colors-btn" id="resetColorsBtn" data-i18n="resetColors">Rikthe ngjyrat fillestare</button>
+    </section>
+
+    <section class="settings-block">
+      <h3 data-i18n="circleColorTitle">Ngjyra e rrethit</h3>
+      <div class="color-pickers single">
+        <label class="color-field">
+          <span data-i18n="colorCircle">Rrethi</span>
+          <input type="color" id="circleColor" value="#2ecc8a" />
+        </label>
+      </div>
+    </section>
+
+    <section class="settings-block">
+      <h3 data-i18n="bgTemplateTitle">Stili i sfondit</h3>
+      <div class="template-grid" id="templateGrid"></div>
+    </section>
+
+    <section class="settings-block">
+      <h3 data-i18n="bgImageTitle">Imazhi i sfondit</h3>
+      <div class="settings-row">
+        <label class="file-btn">
+          <span data-i18n="uploadImage">Ngarko imazh</span>
+          <input type="file" id="bgImageInput" accept="image/*" hidden />
+        </label>
+        <button type="button" class="ghost-btn" id="clearBgImage" data-i18n="clearImage">Hiq imazhin</button>
+      </div>
+    </section>
+  </aside>
+  <div class="settings-backdrop" id="settingsBackdrop" hidden></div>
+
+  <main class="app">
+    <p class="intro" data-i18n-html="intro">Prek rrethin <strong>100</strong> herë. Kur e përfundon, shfaqet shpërblimi — siç na mësoi Profeti Muhammed ﷺ.</p>
+
+    <nav class="steps" id="steps" aria-label="Dhikr progress"></nav>
+
+    <section class="stage" id="stage" aria-live="polite">
+      <div class="phrase-meta">
+        <p class="meaning" id="meaning"></p>
+        <h2 class="arabic" id="arabic" lang="ar" dir="rtl"></h2>
+        <p class="translit" id="translit"></p>
+      </div>
+
+      <button type="button" class="counter-btn" id="counterBtn" aria-label="Add one count">
+        <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="ring-track" cx="60" cy="60" r="54" />
+          <circle class="ring-progress" id="ringProgress" cx="60" cy="60" r="54" />
+        </svg>
+        <span class="count" id="count">0</span>
+        <span class="count-label"><span data-i18n="of">nga</span> <span id="targetLabel">100</span></span>
+      </button>
+
+      <p class="hint" id="hint" hidden></p>
+    </section>
+
+    <section class="reward-panel" id="rewardPanel" hidden>
+      <div class="reward-glow" aria-hidden="true"></div>
+      <p class="reward-eyebrow" data-i18n="rewardUnlocked">Shpërblimi u hap</p>
+      <h3 class="reward-title" id="rewardTitle"></h3>
+      <p class="reward-text" id="rewardText"></p>
+      <button type="button" class="primary-btn" id="nextBtn" data-i18n="continue">Vazhdo</button>
+    </section>
+
+    <section class="complete-panel" id="completePanel" hidden>
+      <div class="complete-burst" aria-hidden="true"></div>
+      <h2 data-i18n="mashaAllah">MashaAllah</h2>
+      <p data-i18n="completeText">Përfundove të katër shprehjet, 100 herë secila. Allahu e pranoftë dhikrin tënd.</p>
+      <ul class="complete-list" id="completeList"></ul>
+      <div class="isnad-box">
+        <h3 data-i18n="isnadTitle">Zinxhiri i transmetimit</h3>
+        <p class="isnad-text" data-i18n-html="isnadText"></p>
+        <p class="isnad-note" data-i18n="isnadNote"></p>
+      </div>
+      <button type="button" class="primary-btn" id="againBtn" data-i18n="beginAgain">Fillo përsëri</button>
+    </section>
+  </main>
+
+  <footer class="footnote">
+    <p data-i18n="footnote">Bazuar në një narracion të njohur për virtytin e këtyre katër shprehjeve. Verifiko gjithmonë me dijetarë të besueshëm.</p>
+  </footer>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
